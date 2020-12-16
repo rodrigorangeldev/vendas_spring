@@ -1,14 +1,19 @@
 package com.rodrigorangeldev.spring_vendas.Domain;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
 public class Estado {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
 
+    @OneToMany(mappedBy = "estado")
     private List<Cidade> cidades = new ArrayList<>();
 
     public Estado(Integer id, String nome) {
