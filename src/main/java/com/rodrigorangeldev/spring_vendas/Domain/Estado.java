@@ -1,5 +1,7 @@
 package com.rodrigorangeldev.spring_vendas.Domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +15,18 @@ public class Estado {
     private Integer id;
     private String nome;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "estado")
     private List<Cidade> cidades = new ArrayList<>();
+
 
     public Estado(Integer id, String nome) {
         this.id = id;
         this.nome = nome;
+    }
+
+    public Estado() {
+
     }
 
     @Override

@@ -1,11 +1,9 @@
 package com.rodrigorangeldev.spring_vendas.Domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rodrigorangeldev.spring_vendas.Enums.TipoCliente;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.*;
 
 @Entity
@@ -18,8 +16,16 @@ public class Cliente {
     private String email;
     private String cpfOuCnpj;
     private Integer tipo;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "cliente")
     private List<Endereco> endereco = new ArrayList<>();
+
+    @ElementCollection
+    @CollectionTable(name = "telefone")
     private Set<String> telefones = new HashSet<>();
+
+    private List<Pedido> pedidos = new ArrayList<>();
 
     public Cliente(){
 
