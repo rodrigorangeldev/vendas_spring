@@ -2,8 +2,10 @@ package com.rodrigorangeldev.spring_vendas.Domain;
 
 import com.rodrigorangeldev.spring_vendas.Enums.EstadoPagamento;
 
+import javax.persistence.Entity;
 import java.util.Date;
 
+@Entity
 public class PagamentoComBoleto extends Pagamento{
 
     private Date dataVencimento;

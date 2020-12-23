@@ -1,25 +1,46 @@
 package com.rodrigorangeldev.spring_vendas.Domain;
 
-import java.util.Date;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.Cascade;
 
+import javax.persistence.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+@Entity
 public class Pedido {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private Date instante;
 
+    @JsonManagedReference
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
     private Pagamento pagamento;
+
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(name = "endereco_de_entrega_id")
     private Endereco enderecoDeentrega;
+
+    @OneToMany(mappedBy = "id.pedido")
+    private Set<ItemPedido> items = new HashSet<>();
 
     public Pedido(){
 
     }
 
-    public Pedido(Integer id, Date instante, Pagamento pagamento, Cliente cliente, Endereco enderecoDeentrega) {
+    public Pedido(Integer id, Date instante, Cliente cliente, Endereco enderecoDeentrega) {
         this.id = id;
         this.instante = instante;
-        this.pagamento = pagamento;
         this.cliente = cliente;
         this.enderecoDeentrega = enderecoDeentrega;
     }
@@ -62,6 +83,14 @@ public class Pedido {
 
     public void setEnderecoDeentrega(Endereco enderecoDeentrega) {
         this.enderecoDeentrega = enderecoDeentrega;
+    }
+
+    public Set<ItemPedido> getItems() {
+        return items;
+    }
+
+    public void setItems(Set<ItemPedido> items) {
+        this.items = items;
     }
 
     @Override

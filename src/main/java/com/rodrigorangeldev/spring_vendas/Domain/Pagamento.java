@@ -1,14 +1,24 @@
 package com.rodrigorangeldev.spring_vendas.Domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.rodrigorangeldev.spring_vendas.Enums.EstadoPagamento;
 
+import javax.persistence.*;
 import java.util.Objects;
 
-public class Pagamento {
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Pagamento {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private EstadoPagamento estado;
+    private Integer estado;
 
+    @JsonBackReference
+    @OneToOne
+    @JoinColumn(name = "pedido_id")
+    @MapsId
     private Pedido pedido;
 
     public Pagamento(){
@@ -17,7 +27,7 @@ public class Pagamento {
 
     public Pagamento(Integer id, EstadoPagamento estado, Pedido pedido) {
         this.id = id;
-        this.estado = estado;
+        this.estado = estado.getCod();
         this.pedido = pedido;
     }
 
@@ -30,11 +40,11 @@ public class Pagamento {
     }
 
     public EstadoPagamento getEstado() {
-        return estado;
+        return EstadoPagamento.toEnum(estado);
     }
 
     public void setEstado(EstadoPagamento estado) {
-        this.estado = estado;
+        this.estado = estado.getCod();
     }
 
     public Pedido getPedido() {
